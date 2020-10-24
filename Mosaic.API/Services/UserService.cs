@@ -20,9 +20,10 @@ namespace Mosaic.API.Services
             };
         }
 
-        public void CreateUser(User usr)
+        public bool CreateUser(User usr)
         {
             Users.Add(usr);
+            return true;
         }
 
         public void DeleteUser(User usr)
@@ -34,6 +35,11 @@ namespace Mosaic.API.Services
         public User GetUser(string usrName)
         {
             return Users.FirstOrDefault(usr => usr.UserName == usrName);
+        }
+
+        public List<User> GetUsers()
+        {
+            return Users;
         }
 
         public User UpdateUser(User usr)
