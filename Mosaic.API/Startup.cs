@@ -22,11 +22,12 @@ namespace Mosaic.API
         {
             services.AddControllers()
                 //Add support for xml reports
-                    .AddMvcOptions(o =>
+                .AddMvcOptions(o =>
                 {
                     o.OutputFormatters.Add(new XmlDataContractSerializerOutputFormatter());
                 });
             services.AddSingleton<IStocksService, StockService>();
+            services.AddSingleton<IUserService, UserService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

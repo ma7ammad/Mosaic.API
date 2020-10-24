@@ -26,7 +26,6 @@ namespace Mosaic.API.Services
         public List<Stock> GetStocks()
         {
             return Stocks;
-
         }
     }
 
