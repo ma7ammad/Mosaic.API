@@ -52,5 +52,13 @@ namespace Mosaic.API.Controllers
             StockService.UpdateStock(id, stock);
             return NoContent();
         }
+
+        //this needs installing Microsoft.AspNetCore.JsonPatch
+        //which is 85 MB, so halted for now
+        //[HttpPatch("{id}")]
+        //public IActionResult PatcStock(int id, [FromBody] JsonPatchDocument stock)
+        //{
+        //    var stockToPatch = StockService.sto
+        //}
     }
 }
