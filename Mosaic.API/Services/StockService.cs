@@ -36,9 +36,23 @@ namespace Mosaic.API.Services
             return Stocks.FirstOrDefault(st => st.Id == id);
         }
 
-        public Stock UpdateStock(Stock stock)
+        public bool UpdateStock(int id, Stock stock)
         {
-            throw new System.NotImplementedException();
+            var st = Stocks.FirstOrDefault(st => st.Id == id);
+            var index = Stocks.IndexOf(st);
+            if (st!=null)
+            {
+                st.StockSymbol = stock.StockSymbol;
+                st.StockName = stock.StockName;
+                st.LastTrade = stock.LastTrade;
+                st.Gains = stock.Gains;
+                st.Value = stock.Value;
+                st.Volume = stock.Volume;
+                st.Open = stock.Open;
+                st.Close = stock.Close;
+            }
+            Stocks[index] = st;
+            return true;
         }
 
         public bool DeleteStock(Stock stock)

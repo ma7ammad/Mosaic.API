@@ -45,5 +45,12 @@ namespace Mosaic.API.Controllers
                 new { id = stock.Id },
                 stock);
         }
+
+        [HttpPost("{id}")]
+        public IActionResult UpdateStock(int id, [FromBody] Stock stock)
+        {
+            StockService.UpdateStock(id, stock);
+            return NoContent();
+        }
     }
 }

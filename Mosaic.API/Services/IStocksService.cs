@@ -9,6 +9,6 @@ namespace Mosaic.API.Services
         Stock GetStock(int id);
         bool CreateSock(Stock stock);
         bool DeleteStock(Stock stock);
-        Stock UpdateStock(Stock stock);
+        bool UpdateStock(int id, Stock stock);
     }
 }
