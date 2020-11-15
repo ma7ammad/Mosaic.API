@@ -5,10 +5,10 @@ namespace Mosaic.API.Services
 {
     public interface IUserService
     {
-        List<User> GetUsers();
+        List<User> GetAllUsers();
         User GetUser(string usrName);
         bool CreateUser(User usr);
-        void DeleteUser(User usr);
+        bool DeleteUser(User usr);
         User UpdateUser(User usr);
     }
 }

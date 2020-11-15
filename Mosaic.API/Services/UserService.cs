@@ -7,7 +7,7 @@ namespace Mosaic.API.Services
 {
     public class UserService : IUserService
     {
-        List<User> Users;
+        readonly List<User> Users;
         public UserService()
         {
             Users = new List<User>()
@@ -26,10 +26,9 @@ namespace Mosaic.API.Services
             return true;
         }
 
-        public void DeleteUser(User usr)
+        public List<User> GetAllUsers()
         {
-            //refactor for EF Core
-            Users.Remove(usr);
+            return Users;
         }
 
         public User GetUser(string usrName)
@@ -37,14 +36,23 @@ namespace Mosaic.API.Services
             return Users.FirstOrDefault(usr => usr.UserName == usrName);
         }
 
-        public List<User> GetUsers()
-        {
-            return Users;
-        }
-
         public User UpdateUser(User usr)
         {
             throw new NotImplementedException();
+        }
+
+        public bool DeleteUser(User usr)
+        {
+            //refactor for EF Core
+            if (Users.FirstOrDefault(ur => ur.UserName == usr.UserName) != null)
+            {
+                Users.Remove(usr);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

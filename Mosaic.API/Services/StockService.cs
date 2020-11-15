@@ -1,4 +1,5 @@
 ﻿using Mosaic.API.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -6,7 +7,7 @@ namespace Mosaic.API.Services
 {
     public class StockService : IStocksService
     {
-        List<Stock> Stocks;
+        readonly List<Stock> Stocks;
         public StockService()
         {
             Stocks = new List<Stock>()
@@ -18,14 +19,39 @@ namespace Mosaic.API.Services
                 };
         }
 
+        public bool CreateSock(Stock stock)
+        {
+            stock.StockSymbol = stock.StockSymbol.ToUpper();
+            Stocks.Add(stock);
+            return true;
+        }
+
+        public List<Stock> GetAllStocks()
+        {
+            return Stocks;
+        }
+
         public Stock GetStock(int id)
         {
             return Stocks.FirstOrDefault(st => st.Id == id);
         }
 
-        public List<Stock> GetStocks()
+        public Stock UpdateStock(Stock stock)
         {
-            return Stocks;
+            throw new System.NotImplementedException();
+        }
+
+        public bool DeleteStock(Stock stock)
+        {
+            if (Stocks.FirstOrDefault(st => st.Id == stock.Id) != null)
+            {
+                Stocks.Remove(stock);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 

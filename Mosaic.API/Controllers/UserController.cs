@@ -8,16 +8,16 @@ namespace Mosaic.API.Controllers
     [Route("api/users")]
     public class UserController : ControllerBase
     {
-        IUserService UserService;
+        readonly IUserService UserService;
         public UserController(IUserService _UserService)
         {
             UserService = _UserService;
         }
 
         [HttpGet]
-        public IActionResult GetUsers()
+        public IActionResult GetAllUsers()
         {
-            return Ok(UserService.GetUsers());
+            return Ok(UserService.GetAllUsers());
         }
 
         [HttpGet("{usrName}", Name ="GetUser")]
