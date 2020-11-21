@@ -1,11 +1,16 @@
-﻿using System.Linq;
+﻿using Microsoft.Extensions.Logging;
+using System;
+using System.Linq;
 
 namespace Mosaic.API.Services
 {
     public class PasswordValidater
     {
-        protected PasswordValidater()
+        private readonly object logger;
+
+        protected PasswordValidater(ILogger<PasswordValidater> _logger)
         {
+            logger = _logger ?? throw new ArgumentNullException(nameof(_logger));
         }
 
         static bool IsLetter(char c)
