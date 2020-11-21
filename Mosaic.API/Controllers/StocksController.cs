@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Mosaic.API.Models;
 using Mosaic.API.Services;
+using System;
 
 namespace Mosaic.API.Controllers
 {
@@ -12,9 +14,12 @@ namespace Mosaic.API.Controllers
     public class StocksController : ControllerBase
     {
         readonly IStocksService StockService;
-        public StocksController(IStocksService _StockService)
+        private readonly ILogger<StocksController> logger;
+
+        public StocksController(IStocksService _StockService, ILogger<StocksController> _logger)
         {
             StockService = _StockService;
+            logger = _logger ?? throw new ArgumentNullException(nameof(_logger));
         }
 
         [HttpGet]
@@ -31,6 +36,7 @@ namespace Mosaic.API.Controllers
             var stock = StockService.GetStock(id);
             if (stock==null)
             {
+                logger.LogError($"No Stock found with id = {id}");
                 return NotFound();
             }
 

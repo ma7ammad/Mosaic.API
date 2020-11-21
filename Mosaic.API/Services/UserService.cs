@@ -1,4 +1,5 @@
-﻿using Mosaic.API.Models;
+﻿using Microsoft.Extensions.Logging;
+using Mosaic.API.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,9 @@ namespace Mosaic.API.Services
     public class UserService : IUserService
     {
         readonly List<User> Users;
-        public UserService()
+        private readonly ILogger<UserService> logger;
+
+        public UserService(ILogger<UserService> _logger)
         {
             Users = new List<User>()
             {
@@ -18,6 +21,7 @@ namespace Mosaic.API.Services
                 new User{BirthDate=DateTime.Parse("04-04-1970"), Email="4@mail.com", FistName="fname4", LastName="lname4", Password="pass4", UserName="usr4"},
                 new User{BirthDate=DateTime.Parse("05-05-1970"), Email="5@mail.com", FistName="fname5", LastName="lname5", Password="pass5", UserName="usr5"}
             };
+            logger = _logger ?? throw new ArgumentNullException(nameof(_logger));
         }
 
         public bool CreateUser(User usr)
@@ -47,6 +51,7 @@ namespace Mosaic.API.Services
             if (Users.FirstOrDefault(ur => ur.UserName == usr.UserName) != null)
             {
                 Users.Remove(usr);
+                logger.LogInformation($"User {usr.FistName} with ID = ?? removed successfully");
                 return true;
             }
             else

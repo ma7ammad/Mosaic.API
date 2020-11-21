@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Mosaic.API.Models;
 using Mosaic.API.Services;
+using System;
 
 namespace Mosaic.API.Controllers
 {
@@ -9,9 +11,12 @@ namespace Mosaic.API.Controllers
     public class UserController : ControllerBase
     {
         readonly IUserService UserService;
-        public UserController(IUserService _UserService)
+        private readonly ILogger<UserController> logger;
+        
+        public UserController(IUserService _UserService, ILogger<UserController> _logger)
         {
             UserService = _UserService;
+            logger = _logger ?? throw new ArgumentNullException(nameof(_logger));
         }
 
         [HttpGet]
