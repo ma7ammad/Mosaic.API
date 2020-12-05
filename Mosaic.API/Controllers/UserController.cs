@@ -39,5 +39,12 @@ namespace Mosaic.API.Controllers
                 new { usrName = usr.UserName },
                 usr);
         }
+
+        [HttpPost("{id}")]
+        public IActionResult UpdateUser(int id, [FromBody] User user)
+        {
+            UserService.UpdateUser(user);
+            return NoContent();
+        }
     }
 }
