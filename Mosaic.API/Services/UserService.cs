@@ -68,7 +68,7 @@ namespace Mosaic.API.Services
             //refactor for EF Core
             if (Users.FirstOrDefault(ur => ur.UserName == usr.UserName) != null)
             {
-                Users.Remove(usr);
+                Users.RemoveAll(ur => ur.Id == usr.Id);
                 logger.LogInformation($"User {usr.FistName} with ID = ?? removed successfully");
                 return true;
             }

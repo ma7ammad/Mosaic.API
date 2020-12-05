@@ -46,5 +46,13 @@ namespace Mosaic.API.Controllers
             UserService.UpdateUser(user);
             return NoContent();
         }
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteUser(int id, [FromBody] User user)
+        {
+            UserService.DeleteUser(user);
+            return NoContent();
+        }
+
     }
 }
