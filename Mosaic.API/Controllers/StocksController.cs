@@ -59,6 +59,13 @@ namespace Mosaic.API.Controllers
             return NoContent();
         }
 
+        [HttpDelete("{id}")]
+        public IActionResult DeleteStock(int id, [FromBody] Stock stock)
+        {
+            StockService.DeleteStock(stock);
+            return NoContent();
+        }
+
         //this needs installing Microsoft.AspNetCore.JsonPatch
         //which is 85 MB, so halted for now
         //[HttpPatch("{id}")]
