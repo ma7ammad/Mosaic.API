@@ -59,7 +59,7 @@ namespace Mosaic.API.Services
         {
             if (Stocks.FirstOrDefault(st => st.Id == stock.Id) != null)
             {
-                Stocks.Remove(stock);
+                Stocks.RemoveAll(st => st.Id == stock.Id);
                 return true;
             }
             else
