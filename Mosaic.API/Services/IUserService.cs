@@ -9,6 +9,6 @@ namespace Mosaic.API.Services
         User GetUser(string usrName);
         bool CreateUser(User usr);
         bool DeleteUser(User usr);
-        User UpdateUser(User usr);
+        bool UpdateUser(User usr);
     }
 }

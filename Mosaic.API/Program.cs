@@ -15,7 +15,7 @@ namespace Mosaic.API
             // logger can not be injected as as DI container has not been set up yet
             //therefore use built in statement GetCurrentClassLogger() that provides an
             // NLog-logger for the program.cs class
-            var logger = NLog.Web.NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
+            var logger = NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
             try
             {
                 logger.Info("**************************** Initialising Mosaic.API ****************************");

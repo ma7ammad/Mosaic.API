@@ -5,6 +5,7 @@ namespace Mosaic.API.Models
 {
     public class User
     {
+        public string Id { get; set; }
         //Must be > 3 chars & less than 16 chars & be unique
         [Required]
         [StringLength(15, ErrorMessage = "{0} length must be between {2} and {1}.", MinimumLength = 4)]
