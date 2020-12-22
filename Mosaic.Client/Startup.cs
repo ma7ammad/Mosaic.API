@@ -38,6 +38,14 @@ namespace Mosaic.Client
                 client.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/json");
             });
 
+            // Create a HttpClient for accessing the IdP
+            services.AddHttpClient("IdPClient", client =>
+            {
+                client.BaseAddress = new Uri("https://localhost:44318");
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/json");
+            });
+
             services.AddAuthentication(options =>
             {
                 options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -52,8 +60,9 @@ namespace Mosaic.Client
                     options.ResponseType = "code";
                     options.UsePkce = true;
                     //options.CallbackPath = new Microsoft.AspNetCore.Http.PathString("...");
-                    options.Scope.Add("openid");
-                    options.Scope.Add("profile");
+                    //options.Scope.Add("openid");
+                    //options.Scope.Add("profile");
+                    options.Scope.Add("email");
 
                     //remove unneeded claims
                     options.ClaimActions.DeleteClaim("sid");
