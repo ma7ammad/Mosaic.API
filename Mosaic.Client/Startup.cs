@@ -63,12 +63,14 @@ namespace Mosaic.Client
                     //options.Scope.Add("openid");
                     //options.Scope.Add("profile");
                     options.Scope.Add("email");
+                    options.Scope.Add("roles");
 
                     //remove unneeded claims
                     options.ClaimActions.DeleteClaim("sid");
                     options.ClaimActions.DeleteClaim("idp");
                     options.ClaimActions.DeleteClaim("s_hash");
                     options.ClaimActions.DeleteClaim("auth_time");
+                    options.ClaimActions.MapUniqueJsonKey("role", "role");
                     options.SaveTokens = true;  // To be able to use the tokens provided by IdP afterward 
                     options.ClientSecret = "secret";
                     options.GetClaimsFromUserInfoEndpoint = true;

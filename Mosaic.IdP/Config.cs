@@ -11,7 +11,8 @@ namespace Mosaic.IdP
             { 
                 new IdentityResources.OpenId(),
                 new IdentityResources.Profile(),
-                new IdentityResources.Email()
+                new IdentityResources.Email(),
+                new IdentityResource("roles", "Your roles(s)", new List<string>() {"role" })
             };
 
         public static IEnumerable<ApiScope> ApiScopes =>
@@ -39,7 +40,8 @@ namespace Mosaic.IdP
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
-                        IdentityServerConstants.StandardScopes.Email
+                        IdentityServerConstants.StandardScopes.Email,
+                        "roles"
                     },
                     ClientSecrets =
                     {
