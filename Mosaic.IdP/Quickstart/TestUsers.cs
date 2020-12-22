@@ -23,6 +23,7 @@ namespace IdentityServerHost.Quickstart.UI
                     new Claim("given_name", "Frank"),
                     new Claim("family_name", "Underwood"),
                     new Claim("email", "Hogwarts@email.com"),
+                    new Claim("role", "admin"),
                 }
             },
             new TestUser
@@ -36,6 +37,7 @@ namespace IdentityServerHost.Quickstart.UI
                     new Claim("given_name", "Claire"),
                     new Claim("family_name", "Underwood"),
                     new Claim("email", "Dumbledore@email.com"),
+                    new Claim("role", "customer"),
                 }
             }
             //get
