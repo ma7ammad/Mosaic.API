@@ -1,4 +1,5 @@
 using System;
+using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
@@ -15,6 +16,9 @@ namespace Mosaic.Client
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            //clear claims mapping dictionary to get rid of generic claim-type-names
+            //and maintain their original names from IdP
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
         }
 
         public IConfiguration Configuration { get; }
