@@ -51,6 +51,7 @@ namespace Mosaic.Client
                     options.Scope.Add("profile");
                     options.SaveTokens = true;  // To be able to use the tokens provided by IdP afterward 
                     options.ClientSecret = "secret";
+                    options.GetClaimsFromUserInfoEndpoint = true;
                 });
         }
 
