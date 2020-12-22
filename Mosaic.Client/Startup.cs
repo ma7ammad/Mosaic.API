@@ -1,5 +1,6 @@
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using IdentityModel;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
@@ -8,6 +9,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
 
 namespace Mosaic.Client
@@ -74,6 +76,11 @@ namespace Mosaic.Client
                     options.SaveTokens = true;  // To be able to use the tokens provided by IdP afterward 
                     options.ClientSecret = "secret";
                     options.GetClaimsFromUserInfoEndpoint = true;
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        NameClaimType = JwtClaimTypes.GivenName,
+                        RoleClaimType = JwtClaimTypes.Role
+                    };
                 });
         }
 
