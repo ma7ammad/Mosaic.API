@@ -45,7 +45,7 @@ namespace Mosaic.Client
                     options.Authority = "https://localhost:44318";
                     options.ClientId = "mosaicclient";
                     options.ResponseType = "code";
-                    options.UsePkce = false;
+                    options.UsePkce = true;
                     //options.CallbackPath = new Microsoft.AspNetCore.Http.PathString("...");
                     options.Scope.Add("openid");
                     options.Scope.Add("profile");
