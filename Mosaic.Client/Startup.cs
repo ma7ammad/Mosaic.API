@@ -1,5 +1,6 @@
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
@@ -53,6 +54,12 @@ namespace Mosaic.Client
                     //options.CallbackPath = new Microsoft.AspNetCore.Http.PathString("...");
                     options.Scope.Add("openid");
                     options.Scope.Add("profile");
+
+                    //remove unneeded claims
+                    options.ClaimActions.DeleteClaim("sid");
+                    options.ClaimActions.DeleteClaim("idp");
+                    options.ClaimActions.DeleteClaim("s_hash");
+                    options.ClaimActions.DeleteClaim("auth_time");
                     options.SaveTokens = true;  // To be able to use the tokens provided by IdP afterward 
                     options.ClientSecret = "secret";
                     options.GetClaimsFromUserInfoEndpoint = true;
