@@ -1,5 +1,4 @@
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using IdentityServer4.AccessTokenValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Formatters;
@@ -23,31 +22,22 @@ namespace Mosaic.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers()
+                .AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = null)
                 //Add support for xml reports
-                .AddMvcOptions(o =>
+                .AddMvcOptions(options =>
                 {
-                    o.OutputFormatters.Add(new XmlDataContractSerializerOutputFormatter());
+                    options.OutputFormatters.Add(new XmlDataContractSerializerOutputFormatter());
                 });
 
-            services.AddAuthentication(options =>
-            {
-                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
-            })
-                .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options =>
+            
+
+            services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
+                .AddIdentityServerAuthentication(options =>
                 {
-                    options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                     options.Authority = "https://localhost:44318";
-                    options.ClientId = "mosaicclient";
-                    options.ResponseType = "code";
-                    options.UsePkce = false;
-                    //options.CallbackPath = new Microsoft.AspNetCore.Http.PathString("...")
-                    options.Scope.Add("openid");
-                    options.Scope.Add("profile");
-                    options.SaveTokens = true;
-                    options.ClientSecret = "secret";
+                    options.ApiName = "mosaicapi"; //checks whether mosaicapi is within the audience in the token
                 });
+
             services.AddSingleton<IStocksService, StockService>();
             services.AddSingleton<IUserService, UserService>();
         }
@@ -61,10 +51,11 @@ namespace Mosaic.API
             }
 
             app.UseHttpsRedirection();
+            app.UseStaticFiles();
 
             app.UseRouting();
-            app.UseAuthentication();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

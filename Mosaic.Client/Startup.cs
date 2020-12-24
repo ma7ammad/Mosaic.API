@@ -11,6 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
+using Mosaic.Client.HttpHandlers;
+using Mosaic.Client.Services;
 
 namespace Mosaic.Client
 {
@@ -30,20 +32,27 @@ namespace Mosaic.Client
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews()
-                .AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = null)
-                ;
+                .AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
+
+            services.AddTransient<IStockService, StockService>();
+
+            services.AddHttpContextAccessor();
+            services.AddTransient<BearerTokenHandler>();
+
             // Create a HttpClient for accessing the API
             services.AddHttpClient("APIClient", client =>
             {
-                client.BaseAddress = new Uri("https://localhost:5001");
+                client.BaseAddress = new Uri("https://localhost:6001/");
                 client.DefaultRequestHeaders.Clear();
                 client.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/json");
-            });
+            })
+                //Add Bearer Token to all http requests going out to API
+                .AddHttpMessageHandler<BearerTokenHandler>();
 
             // Create a HttpClient for accessing the IdP
             services.AddHttpClient("IdPClient", client =>
             {
-                client.BaseAddress = new Uri("https://localhost:44318");
+                client.BaseAddress = new Uri("https://localhost:44318/");
                 client.DefaultRequestHeaders.Clear();
                 client.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/json");
             });
@@ -69,6 +78,7 @@ namespace Mosaic.Client
                     //options.Scope.Add("profile");
                     options.Scope.Add("email");
                     options.Scope.Add("roles");
+                    options.Scope.Add("mosaicapi");
 
                     //remove unneeded claims
                     options.ClaimActions.DeleteClaim("sid");
@@ -85,6 +95,7 @@ namespace Mosaic.Client
                         RoleClaimType = JwtClaimTypes.Role
                     };
                 });
+            //services.AddTransient<IStockService, StockService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
