@@ -1,0 +1,12 @@
+﻿
+
+@model Mosaic.Client.ViewModels.StocksIndexViewModel
+
+@foreach (var item in @Model.Stocks)
+{
+    <p> Id = @item.Id</p>
+    <p> StockName = @item.StockName</p>
+    <p> StockSymbol = @item.StockSymbol</p>
+    <p>@* Value = @item.Value*@</p>
+    <p> Volume = @item.Volume</p>
+}

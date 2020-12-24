@@ -17,7 +17,20 @@ namespace Mosaic.IdP
 
         public static IEnumerable<ApiScope> ApiScopes =>
             new ApiScope[]
-            { };
+            {
+                new ApiScope("mosaicapi", "Mosaic API Scope")
+            };
+
+        public static IEnumerable<ApiResource> ApiResources =>
+            new ApiResource[] {
+                new ApiResource(
+                    "mosaicapi",
+                    "Mosaic API",
+                    new[] { "role" })
+                    {
+                        Scopes = { "mosaicapi" }
+                    }
+                };
 
         public static IEnumerable<Client> Clients =>
             new Client[] 
@@ -41,7 +54,8 @@ namespace Mosaic.IdP
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
                         IdentityServerConstants.StandardScopes.Email,
-                        "roles"
+                        "roles",
+                        "mosaicapi"
                     },
                     ClientSecrets =
                     {

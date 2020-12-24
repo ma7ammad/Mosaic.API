@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Mosaic.API.Models;
 using Mosaic.API.Services;
@@ -8,6 +9,7 @@ namespace Mosaic.API.Controllers
 {
     [ApiController]
     [Route("api/stocks")]
+    [Authorize]
 
     //API controller auto check model validation , so just make sure annotations are used in models
     //Fluent vaidation is for complex apps
@@ -25,7 +27,8 @@ namespace Mosaic.API.Controllers
         [HttpGet]
         public IActionResult GetAllStocks()
         {
-            return Ok(StockService.GetAllStocks());
+            var result = Ok(StockService.GetAllStocks());
+            return result;
         }
 
         [HttpGet("{id}", Name = "GetStock")]
