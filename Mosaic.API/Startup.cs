@@ -36,6 +36,7 @@ namespace Mosaic.API
                 {
                     options.Authority = "https://localhost:44318";
                     options.ApiName = "mosaicapi"; //checks whether mosaicapi is within the audience in the token
+                    options.ApiSecret = "apisecret";
                 });
 
             services.AddSingleton<IStocksService, StockService>();
