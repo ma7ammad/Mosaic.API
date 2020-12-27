@@ -79,6 +79,7 @@ namespace Mosaic.Client
                     options.Scope.Add("email");
                     options.Scope.Add("roles");
                     options.Scope.Add("mosaicapi");
+                    options.Scope.Add("offline_access");
 
                     //remove unneeded claims
                     options.ClaimActions.DeleteClaim("sid");
