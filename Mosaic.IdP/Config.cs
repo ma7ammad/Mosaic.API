@@ -37,6 +37,11 @@ namespace Mosaic.IdP
             {
                 new Client
                 {
+                    // config refresh tokens
+                    AccessTokenLifetime = 120,
+                    AllowOfflineAccess = true,
+                    UpdateAccessTokenClaimsOnRefresh = true,
+
                     ClientName = "Mosaic",
                     ClientId = "mosaicclient",
                     AllowedGrantTypes = GrantTypes.Code,
