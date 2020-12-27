@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using Mosaic.API.Models;
 using Mosaic.API.Services;
 using System;
+using System.Linq;
 
 namespace Mosaic.API.Controllers
 {
@@ -25,10 +26,27 @@ namespace Mosaic.API.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public IActionResult GetAllStocks()
         {
             var result = Ok(StockService.GetAllStocks());
             return result;
+        }
+
+        [HttpGet("GetUserStocks")]
+        //[ProducesResponseType(StatusCodes.Status200OK)]
+        //[ProducesResponseType(StatusCodes.Status404NotFound)]
+        public IActionResult GetUserStocks()
+        {
+            var userId = User.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
+            var stock = StockService.GetUserStocks(userId);
+             if (stock == null)
+            {
+                logger.LogError($"No Stock found for user with id = {userId}");
+                return NotFound();
+            }
+
+            return Ok(stock);
         }
 
         [HttpGet("{id}", Name = "GetStock")]
@@ -37,7 +55,7 @@ namespace Mosaic.API.Controllers
         public IActionResult GetStock(int id)
         {
             var stock = StockService.GetStock(id);
-            if (stock==null)
+            if (stock == null)
             {
                 logger.LogError($"No Stock found with id = {id}");
                 return NotFound();
@@ -47,6 +65,7 @@ namespace Mosaic.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles ="Admin")]
         public IActionResult CreateStock(Stock stock)
         {
             StockService.CreateSock(stock);

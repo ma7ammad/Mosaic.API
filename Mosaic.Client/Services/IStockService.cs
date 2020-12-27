@@ -7,6 +7,7 @@ namespace Mosaic.Client.Services
     public interface IStockService
     {
         Task<StocksIndexViewModel> GetAllStocks();
+        Task<StocksIndexViewModel> GetUserStocks(string userId);
         Stock GetStock(int id);
         bool CreateSock(Stock stock);
         bool DeleteStock(Stock stock);
