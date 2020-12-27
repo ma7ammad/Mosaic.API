@@ -12,8 +12,8 @@ namespace Mosaic.API.Services
         {
             Stocks = new List<Stock>()
                 {
-                    new Stock {Id=1, StockSymbol="LLOYDS", StockName="Stock 1"},
-                    new Stock {Id= 2, StockSymbol="LLOYDS", StockName="Stock 2"},
+                    new Stock {Id=1, StockSymbol="HSBC", StockName="Stock 1"},
+                    new Stock {Id= 2, StockSymbol="BARC", StockName="Stock 2"},
                     new Stock {Id= 3, StockSymbol="LLOYDS", StockName="Stock 3"},
                     new Stock {Id= 4, StockSymbol="MUFG", StockName="Stock 4"}
                 };
@@ -34,6 +34,22 @@ namespace Mosaic.API.Services
         public Stock GetStock(int id)
         {
             return Stocks.FirstOrDefault(st => st.Id == id);
+        }
+
+        public List<Stock> GetUserStocks(string userId)
+        {
+            if (userId == "b7539694-97e7-4dfe-84da-b4256e1ff5c7")
+            {
+                var newStocks = Stocks;
+                newStocks.RemoveAll(st => st.Id == 1);
+                return newStocks;
+            }
+            else
+            {
+                var newStocks = Stocks;
+                newStocks.RemoveAll(st => st.Id == 4);
+                return newStocks;
+            }
         }
 
         public bool UpdateStock(int id, Stock stock)

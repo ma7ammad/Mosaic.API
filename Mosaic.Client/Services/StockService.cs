@@ -6,6 +6,8 @@ using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.Security.Claims;
+
 
 namespace Mosaic.Client.Services
 {
@@ -35,6 +37,32 @@ namespace Mosaic.Client.Services
             var request = new HttpRequestMessage(
                 HttpMethod.Get,
                 "/api/stocks/");
+
+            var response = await httpClient.SendAsync(
+                request, HttpCompletionOption.ResponseHeadersRead).ConfigureAwait(false);
+
+            if (response.IsSuccessStatusCode)
+            {
+                using (var responseStream = await response.Content.ReadAsStreamAsync())
+                {
+                    return (new StocksIndexViewModel(
+                        await JsonSerializer.DeserializeAsync<List<Stock>>(responseStream)));
+                }
+            }
+            //else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized ||
+            //        response.StatusCode == System.Net.HttpStatusCode.Forbidden)
+            //{
+            //    return RedirectToAction("AccessDenied", "Authorization");
+            //}
+
+            throw new Exception("Problem accessing the API");
+        }
+
+        public async Task<StocksIndexViewModel> GetUserStocks(string userId)
+        {
+            var request = new HttpRequestMessage(
+                HttpMethod.Get,
+                "/api/stocks/GetUserStocks");
 
             var response = await httpClient.SendAsync(
                 request, HttpCompletionOption.ResponseHeadersRead).ConfigureAwait(false);
