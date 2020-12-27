@@ -28,7 +28,8 @@ namespace Mosaic.IdP
                     "Mosaic API",
                     new[] { "role" })
                     {
-                        Scopes = { "mosaicapi" }
+                        Scopes = { "mosaicapi" },
+                        ApiSecrets = {new Secret("apisecret".Sha256())}
                     }
                 };
 
@@ -38,6 +39,7 @@ namespace Mosaic.IdP
                 new Client
                 {
                     // config refresh tokens
+                    AccessTokenType = AccessTokenType.Reference,
                     AccessTokenLifetime = 120,
                     AllowOfflineAccess = true,
                     UpdateAccessTokenClaimsOnRefresh = true,
