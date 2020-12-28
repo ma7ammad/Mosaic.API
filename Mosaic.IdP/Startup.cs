@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Mosaic.IdP
 {
@@ -37,6 +39,7 @@ namespace Mosaic.IdP
 
             // not recommended for production - you need to store your key material somewhere secure
             builder.AddDeveloperSigningCredential();
+            //builder.AddSigningCredential(LoadCertificateFromStore());
         }
 
         public void Configure(IApplicationBuilder app)
@@ -58,6 +61,24 @@ namespace Mosaic.IdP
             {
                 endpoints.MapDefaultControllerRoute();
             });
+        }
+
+        public X509Certificate2 LoadCertificateFromStore()
+        {
+            string thumbPrint = "a2a9098443b573fd75e8974a44437e9ba2354530";
+
+            using (var store = new X509Store(StoreName.My, StoreLocation.LocalMachine))
+            {
+                store.Open(OpenFlags.ReadOnly);
+                var certCollection = store.Certificates.Find(X509FindType.FindByThumbprint,
+                    thumbPrint, true);
+                if (certCollection.Count == 0)
+                {
+                    throw new Exception("The specified certificate wasn't found");
+                }
+
+                return certCollection[0];
+            }
         }
     }
 }

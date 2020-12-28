@@ -35,8 +35,9 @@ namespace Mosaic.Client.Controllers
                 var userId = User.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
                 return View(StockService.GetUserStocks(userId).Result);
             }
-            catch
+            catch(Exception e)
             {
+                logger.LogError($"error thrown with exception {e.Message} and inner exception {e.InnerException.Message}");
                 return RedirectToAction("AccessDenied", "Authorisation");
             }
 
