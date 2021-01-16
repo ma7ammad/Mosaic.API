@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Mosaic.IdP.DbContexts;
+using Mosaic.IdP.Services;
 using System;
 using System.Linq;
 using System.Reflection;
@@ -52,7 +53,9 @@ namespace Mosaic.IdP
                 .AddInMemoryApiScopes(Config.ApiScopes)
                 .AddInMemoryApiResources(Config.ApiResources)
                 .AddInMemoryClients(Config.Clients);
-                //.AddTestUsers(TestUsers.Users);
+            //.AddTestUsers(TestUsers.Users);
+
+            builder.AddProfileService<LocalUserProfileService>();
 
             // not recommended for production - you need to store your key material somewhere secure
             builder.AddDeveloperSigningCredential();
