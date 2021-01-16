@@ -5,6 +5,7 @@
 using IdentityServer4.EntityFramework.DbContexts;
 using IdentityServer4.EntityFramework.Mappers;
 using IdentityServerHost.Quickstart.UI;
+using Marvin.IDP.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -39,6 +40,8 @@ namespace Mosaic.IdP
             {
                 options.UseSqlServer(mosaicidpdbconnectionstring);
             });
+
+            services.AddScoped<ILocalUserService, LocalUserService>();
             var builder = services.AddIdentityServer(options =>
             {
                 // see https://identityserver4.readthedocs.io/en/latest/topics/resources.html
