@@ -1,7 +1,7 @@
 ﻿using IdentityServer4.Extensions;
 using IdentityServer4.Models;
 using IdentityServer4.Services;
-using Marvin.IDP.Services;
+using Mosaic.IdP.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;

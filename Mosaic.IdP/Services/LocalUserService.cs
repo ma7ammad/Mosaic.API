@@ -11,7 +11,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 
-namespace Marvin.IDP.Services
+namespace Mosaic.IdP.Services
 {
     public class LocalUserService : ILocalUserService
     {
