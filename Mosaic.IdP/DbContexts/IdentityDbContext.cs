@@ -32,7 +32,7 @@ namespace Mosaic.IdP.DbContexts
                 new User()
                 {
                     Id = new Guid("13229d33-99e0-41b3-b18d-4f72127e3971"),
-                    Password = "password",
+                    Password = "AQAAAAEAACcQAAAAECEiSFZvU+Xi2z67lh+y1p5fVn+gNhtp8IJn7sIXIgY1ohxS+0bbBXY2DmUH6jCdbA==",
                     Subject = "d860efca-22d9-47fd-8249-791ba61b07c7",
                     UserName = "Frank",
                     Active = true
@@ -40,7 +40,7 @@ namespace Mosaic.IdP.DbContexts
                 new User()
                 {
                     Id = new Guid("96053525-f4a5-47ee-855e-0ea77fa6c55a"),
-                    Password = "password",
+                    Password = "AQAAAAEAACcQAAAAECEiSFZvU+Xi2z67lh+y1p5fVn+gNhtp8IJn7sIXIgY1ohxS+0bbBXY2DmUH6jCdbA==",
                     Subject = "b7539694-97e7-4dfe-84da-b4256e1ff5c7",
                     UserName = "Claire",
                     Active = true
@@ -65,6 +65,13 @@ namespace Mosaic.IdP.DbContexts
              {
                  Id = Guid.NewGuid(),
                  UserId = new Guid("13229d33-99e0-41b3-b18d-4f72127e3971"),
+                 Type = "email",
+                 Value = "frank@someprovider.com"
+             },
+             new UserClaim()
+             {
+                 Id = Guid.NewGuid(),
+                 UserId = new Guid("13229d33-99e0-41b3-b18d-4f72127e3971"),
                  Type = "address",
                  Value = "Main Road 1"
              },
@@ -72,15 +79,8 @@ namespace Mosaic.IdP.DbContexts
              {
                  Id = Guid.NewGuid(),
                  UserId = new Guid("13229d33-99e0-41b3-b18d-4f72127e3971"),
-                 Type = "subscriptionlevel",
-                 Value = "FreeUser"
-             },
-             new UserClaim()
-             {
-                 Id = Guid.NewGuid(),
-                 UserId = new Guid("13229d33-99e0-41b3-b18d-4f72127e3971"),
-                 Type = "country",
-                 Value = "nl"
+                 Type = "role",
+                 Value = "Admin"
              },
              new UserClaim()
              {
@@ -100,6 +100,13 @@ namespace Mosaic.IdP.DbContexts
              {
                  Id = Guid.NewGuid(),
                  UserId = new Guid("96053525-f4a5-47ee-855e-0ea77fa6c55a"),
+                 Type = "email",
+                 Value = "claire@someprovider.com"
+             },
+             new UserClaim()
+             {
+                 Id = Guid.NewGuid(),
+                 UserId = new Guid("96053525-f4a5-47ee-855e-0ea77fa6c55a"),
                  Type = "address",
                  Value = "Big Street 2"
              },
@@ -107,15 +114,8 @@ namespace Mosaic.IdP.DbContexts
              {
                  Id = Guid.NewGuid(),
                  UserId = new Guid("96053525-f4a5-47ee-855e-0ea77fa6c55a"),
-                 Type = "subscriptionlevel",
-                 Value = "PayingUser"
-             },
-             new UserClaim()
-             {
-                 Id = Guid.NewGuid(),
-                 UserId = new Guid("96053525-f4a5-47ee-855e-0ea77fa6c55a"),
-                 Type = "country",
-                 Value = "be"
+                 Type = "role",
+                 Value = "User"
              });
         }
 
