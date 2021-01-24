@@ -15,12 +15,12 @@ namespace Mosaic.IdP.Services
 {
     public class LocalUserService : ILocalUserService
     {
-        private readonly IdentityDbContext _context;
+        private readonly IdentityDbContext Context;
         private readonly IPasswordHasher<User> PasswordHasher;
 
         public LocalUserService(IdentityDbContext context, IPasswordHasher<User> passwordHasher)
         {
-            _context = context ?? throw new ArgumentNullException(nameof(context));
+            Context = context ?? throw new ArgumentNullException(nameof(context));
             PasswordHasher = passwordHasher ?? throw new ArgumentNullException(nameof(passwordHasher));
         }          
 
@@ -99,7 +99,7 @@ namespace Mosaic.IdP.Services
                 throw new ArgumentNullException(nameof(userName));
             }
 
-            return await _context.Users
+            return await Context.Users
                  .FirstOrDefaultAsync(u => u.UserName == userName);
         }
  
@@ -110,7 +110,7 @@ namespace Mosaic.IdP.Services
                 throw new ArgumentNullException(nameof(subject));
             }
 
-            return await _context.UserClaims.Where(u => u.User.Subject == subject).ToListAsync(); 
+            return await Context.UserClaims.Where(u => u.User.Subject == subject).ToListAsync(); 
         }
          
         public async Task<User> GetUserBySubjectAsync(string subject)
@@ -120,7 +120,7 @@ namespace Mosaic.IdP.Services
                 throw new ArgumentNullException(nameof(subject));
             }
 
-            return await _context.Users.FirstOrDefaultAsync(u => u.Subject == subject);
+            return await Context.Users.FirstOrDefaultAsync(u => u.Subject == subject);
         }
      
         public void AddUser(User userToAdd, string password)
@@ -135,16 +135,31 @@ namespace Mosaic.IdP.Services
                 throw new ArgumentNullException(nameof(password));
             }
 
-            if (_context.Users.Any(u => u.UserName == userToAdd.UserName))
+            if (Context.Users.Any(u => u.UserName == userToAdd.UserName))
             {
                 // in a real-life scenario you'll probably want to 
                 // return this as a validation issue
                 throw new Exception("Username must be unique");
             }
 
+            if (Context.Users.Any(u => u.Email == userToAdd.Email))
+            {
+                // return validation error
+                throw new Exception("Email must be unique");
+            }
+
+            using (var randomNumberGenerator = new RNGCryptoServiceProvider())
+            {
+                var securityCodeData = new byte[128];
+                randomNumberGenerator.GetBytes(securityCodeData);
+                userToAdd.SecurityCode = Convert.ToBase64String(securityCodeData);
+            }
+
+            userToAdd.SecurityCodeExpirationDate = DateTime.UtcNow.AddHours(1);
+
             // Hash and Salt password
             userToAdd.Password = PasswordHasher.HashPassword(userToAdd, password);
-            _context.Users.Add(userToAdd);
+            Context.Users.Add(userToAdd);
         }
 
         //public void AddUser(User userToAdd, string password)
@@ -186,27 +201,30 @@ namespace Mosaic.IdP.Services
         //    _context.Users.Add(userToAdd);
         //}
 
-        //public async Task<bool> ActivateUser(string securityCode)
-        //{
-        //    if (string.IsNullOrWhiteSpace(securityCode))
-        //    {
-        //        throw new ArgumentNullException(nameof(securityCode));
-        //    }
-            
-        //    // find an user with this security code as an active security code.  
-        //    var user = await _context.Users.FirstOrDefaultAsync(u => 
-        //        u.SecurityCode == securityCode && 
-        //        u.SecurityCodeExpirationDate >= DateTime.UtcNow);
+        public async Task<bool> ActivateUser(string securityCode)
+        {
+            if (string.IsNullOrWhiteSpace(securityCode))
+            {
+                throw new ArgumentNullException(nameof(securityCode));
+            }
 
-        //    if (user == null)
-        //    {
-        //        return false;
-        //    }
+            // find an user with this security code as an active security code.  
+            var user = await Context.Users.FirstOrDefaultAsync(u =>
+                u.SecurityCode == securityCode &&
+                u.SecurityCodeExpirationDate >= DateTime.UtcNow);
 
-        //    user.Active = true;
-        //    user.SecurityCode = null;
-        //    return true;
-        //}
+            if (user == null)
+            {
+                return false;
+            }
+
+            // Activate User 
+            user.Active = true;
+
+            // Remove SecurityCode to ensure it is only used once
+            user.SecurityCode = null;
+            return true;
+        }
 
         //public async Task<bool> AddUserSecret(string subject, string name, string secret)
         //{
@@ -226,7 +244,7 @@ namespace Mosaic.IdP.Services
         //    }
 
         //    var user = await GetUserBySubjectAsync(subject); 
-            
+
         //    if (user == null)
         //    {
         //        return false;
@@ -334,7 +352,7 @@ namespace Mosaic.IdP.Services
 
         //    return userLogin?.User;
         //}
-        
+
         //public async Task AddExternalProviderToUser(
         //    string subject,
         //    string provider,
@@ -362,7 +380,7 @@ namespace Mosaic.IdP.Services
         //        ProviderIdentityKey = providerIdentityKey
         //    });            
         //}
-        
+
         //public User ProvisionUserFromExternalIdentity(
         //    string provider, 
         //    string providerIdentityKey,
@@ -402,11 +420,11 @@ namespace Mosaic.IdP.Services
         //    return user;
         //}
 
-      
+
 
         public async Task<bool> SaveChangesAsync()
         {
-            return (await _context.SaveChangesAsync() > 0);
+            return (await Context.SaveChangesAsync() > 0);
         }      
     }
 }

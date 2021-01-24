@@ -56,6 +56,11 @@ namespace IdentityServerHost.Quickstart.UI
         [HttpGet]
         public async Task<IActionResult> Login(string returnUrl)
         {
+            //// if just redirected from successful activattion then pass app url
+            //if (returnUrl == null)
+            //{
+            //    returnUrl = "https://localhost:44389/";
+            //}
             // build a model so we know what to show on the login page
             var vm = await BuildLoginViewModelAsync(returnUrl);
 
