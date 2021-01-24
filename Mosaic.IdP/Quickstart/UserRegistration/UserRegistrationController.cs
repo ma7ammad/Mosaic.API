@@ -41,7 +41,7 @@ namespace Mosaic.IdP.UserRegistration
 
             var userToCreate = new Entities.User
             {
-                Password = model.Password,
+                //Password = model.Password,
                 UserName = model.UserName,
                 Subject = Guid.NewGuid().ToString(),
                 Active = true
@@ -83,7 +83,7 @@ namespace Mosaic.IdP.UserRegistration
                 Value = model.Role
             });
 
-            LocalUserService.AddUser(userToCreate);
+            LocalUserService.AddUser(userToCreate, model.Password);
             await LocalUserService.SaveChangesAsync();
 
             // login user

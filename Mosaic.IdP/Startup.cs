@@ -17,6 +17,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
+using Microsoft.AspNetCore.Identity;
 
 namespace Mosaic.IdP
 {
@@ -42,6 +43,7 @@ namespace Mosaic.IdP
                 options.UseSqlServer(mosaicidpdbconnectionstring);
             });
 
+            services.AddScoped<IPasswordHasher<Entities.User>, PasswordHasher<Entities.User>>();
             services.AddScoped<ILocalUserService, LocalUserService>();
 
             var builder = services.AddIdentityServer(options =>
