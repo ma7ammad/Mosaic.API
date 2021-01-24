@@ -8,6 +8,7 @@ using System;
 //using Microsoft.AspNetCore.Authentication.Abstractions;
 using System.Threading.Tasks;
 using IdentityServer4;
+using System.Diagnostics;
 
 namespace Mosaic.IdP.UserRegistration
 {
@@ -30,6 +31,23 @@ namespace Mosaic.IdP.UserRegistration
             return View(vm);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> ActivateUser(string securityCode)
+        {
+            if (await LocalUserService.ActivateUser(securityCode))
+            {
+                ViewData["Message"] = "Your account was successfully activated, Navigate to your client application to login";
+            }
+            else
+            {
+                ViewData["Message"] = "Your account couldn't be activated, Please contact your Admin";
+            }
+
+            await LocalUserService.SaveChangesAsync();
+
+            return View();
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RegisterUser(RegisterUserViewModel model)
@@ -44,7 +62,8 @@ namespace Mosaic.IdP.UserRegistration
                 //Password = model.Password,
                 UserName = model.UserName,
                 Subject = Guid.NewGuid().ToString(),
-                Active = true
+                Email = model.Email,
+                Active = false
             };
 
             userToCreate.Claims.Add(new Entities.UserClaim()
@@ -86,16 +105,24 @@ namespace Mosaic.IdP.UserRegistration
             LocalUserService.AddUser(userToCreate, model.Password);
             await LocalUserService.SaveChangesAsync();
 
-            // login user
-            await HttpContext.SignInAsync(new IdentityServerUser(userToCreate.Subject));
+            // Create an activation link
+            var link = Url.ActionLink("ActivateUser", "UserRegistration", new { securityCode = userToCreate.SecurityCode });
 
-            // continue with the flow
-            if (Interaction.IsValidReturnUrl(model.ReturnUrl) || Url.IsLocalUrl(model.ReturnUrl))
-            {
-                return Redirect(model.ReturnUrl);
-            }
+            // No Exchange server: therefore use Debug Output to test Activation lik working
+            Debug.WriteLine(link);
 
-            return Redirect("~/");
+            return View("ActivationCodeSent");
+
+            //    // login user
+            //    await HttpContext.SignInAsync(new IdentityServerUser(userToCreate.Subject));
+
+            //    // continue with the flow
+            //    if (Interaction.IsValidReturnUrl(model.ReturnUrl) || Url.IsLocalUrl(model.ReturnUrl))
+            //    {
+            //        return Redirect(model.ReturnUrl);
+            //    }
+
+            //    return Redirect("~/");
         }
     }
 }
