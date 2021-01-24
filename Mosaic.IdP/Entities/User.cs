@@ -21,13 +21,21 @@ namespace Mosaic.IdP.Entities
         [Required]
         [MinLength(8)]
         public string Password { get; set; }
-        //Must be a valid email address, Must have two field inputs
-        [EmailAddress]
-        public string Email { get; set; }
         //
         public string FistName { get; set; }
         public string LastName { get; set; }
+        //Must be a valid email address, Must have two field inputs
+        [EmailAddress]
+        public string Email { get; set; }
+
+        [MaxLength(200)]
+        public string SecurityCode { get; set; }
+
+        public DateTime SecurityCodeExpirationDate { get; set; }
+
         //Must be a valid date
+        [DataType(DataType.Date)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         public DateTime BirthDate { get; set; }
 
         [Required]

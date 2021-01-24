@@ -48,6 +48,13 @@ namespace Mosaic.IdP.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("SecurityCode")
+                        .HasColumnType("nvarchar(200)")
+                        .HasMaxLength(200);
+
+                    b.Property<DateTime>("SecurityCodeExpirationDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Subject")
                         .IsRequired()
                         .HasColumnType("nvarchar(200)")
@@ -74,8 +81,9 @@ namespace Mosaic.IdP.Migrations
                             Id = new Guid("13229d33-99e0-41b3-b18d-4f72127e3971"),
                             Active = true,
                             BirthDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ConcurrencyStamp = "4a67992b-1679-4a33-833a-470f9bd05628",
-                            Password = "password",
+                            ConcurrencyStamp = "311250cb-2451-43c0-9e47-1d47f09ec295",
+                            Password = "AQAAAAEAACcQAAAAECEiSFZvU+Xi2z67lh+y1p5fVn+gNhtp8IJn7sIXIgY1ohxS+0bbBXY2DmUH6jCdbA==",
+                            SecurityCodeExpirationDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Subject = "d860efca-22d9-47fd-8249-791ba61b07c7",
                             UserName = "Frank"
                         },
@@ -84,8 +92,9 @@ namespace Mosaic.IdP.Migrations
                             Id = new Guid("96053525-f4a5-47ee-855e-0ea77fa6c55a"),
                             Active = true,
                             BirthDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ConcurrencyStamp = "32c59115-7918-4b95-a9a9-e4d6182c1c38",
-                            Password = "password",
+                            ConcurrencyStamp = "1fc46b51-ed5d-4e9c-878d-eb2735636836",
+                            Password = "AQAAAAEAACcQAAAAECEiSFZvU+Xi2z67lh+y1p5fVn+gNhtp8IJn7sIXIgY1ohxS+0bbBXY2DmUH6jCdbA==",
+                            SecurityCodeExpirationDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Subject = "b7539694-97e7-4dfe-84da-b4256e1ff5c7",
                             UserName = "Claire"
                         });
@@ -123,83 +132,83 @@ namespace Mosaic.IdP.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("e751221c-91e5-4996-8b8e-fa763fa4c142"),
-                            ConcurrencyStamp = "d6036a15-0a67-4caa-9b2d-d1c1bb28f048",
+                            Id = new Guid("f3889757-10d6-4e70-ada2-4441736a6c14"),
+                            ConcurrencyStamp = "7f5e79e7-ca08-4be3-a5dd-b1ae742a7ad2",
                             Type = "given_name",
                             UserId = new Guid("13229d33-99e0-41b3-b18d-4f72127e3971"),
                             Value = "Frank"
                         },
                         new
                         {
-                            Id = new Guid("c77af288-5357-4d38-a491-cfbd098d454c"),
-                            ConcurrencyStamp = "4a8f5f5b-fe85-47df-a098-86f4478cc0d4",
+                            Id = new Guid("b74d8056-7fe3-4509-8014-ddcbc3e60cd6"),
+                            ConcurrencyStamp = "873f531f-91d8-41cd-81ea-c590c341692d",
                             Type = "family_name",
                             UserId = new Guid("13229d33-99e0-41b3-b18d-4f72127e3971"),
                             Value = "Underwood"
                         },
                         new
                         {
-                            Id = new Guid("d48cfa70-0cd9-414a-8a30-ea62d0599ab9"),
-                            ConcurrencyStamp = "a0f5e9e4-1686-4ecc-9b9a-82394f5cca3d",
+                            Id = new Guid("94dcbce3-ac26-4e8b-8ffc-8a009b5cb9fd"),
+                            ConcurrencyStamp = "91cdb24b-8a7c-433d-abd0-7b86e5377646",
+                            Type = "email",
+                            UserId = new Guid("13229d33-99e0-41b3-b18d-4f72127e3971"),
+                            Value = "frank@someprovider.com"
+                        },
+                        new
+                        {
+                            Id = new Guid("cf3120a7-3b84-4a43-94b7-8d0b7a6be2cb"),
+                            ConcurrencyStamp = "8ff86915-f576-4da2-978f-b7a7392c1c59",
                             Type = "address",
                             UserId = new Guid("13229d33-99e0-41b3-b18d-4f72127e3971"),
                             Value = "Main Road 1"
                         },
                         new
                         {
-                            Id = new Guid("6acf584c-417d-4865-89da-9e16bd2c4f3e"),
-                            ConcurrencyStamp = "43a1f7d7-a59f-4c95-becc-734f58240da3",
-                            Type = "subscriptionlevel",
+                            Id = new Guid("569015b7-7878-47d3-bcf5-8083f5086640"),
+                            ConcurrencyStamp = "3904acdb-3e39-4f73-b558-b22179e7145f",
+                            Type = "role",
                             UserId = new Guid("13229d33-99e0-41b3-b18d-4f72127e3971"),
-                            Value = "FreeUser"
+                            Value = "Admin"
                         },
                         new
                         {
-                            Id = new Guid("3f08a4c6-6950-4794-8924-38c17eb8ac20"),
-                            ConcurrencyStamp = "7a031383-863f-4d07-ae19-d0ab5d787e92",
-                            Type = "country",
-                            UserId = new Guid("13229d33-99e0-41b3-b18d-4f72127e3971"),
-                            Value = "nl"
-                        },
-                        new
-                        {
-                            Id = new Guid("16062e67-5369-417f-baa5-e7d2caf9d6b6"),
-                            ConcurrencyStamp = "29fc29e7-0ecf-4583-8396-b59a56f98a6f",
+                            Id = new Guid("dda5c6bc-06db-4b9b-8526-75c77af78d56"),
+                            ConcurrencyStamp = "b7fe5328-9dc3-4bf9-9385-b54327fde4f3",
                             Type = "given_name",
                             UserId = new Guid("96053525-f4a5-47ee-855e-0ea77fa6c55a"),
                             Value = "Claire"
                         },
                         new
                         {
-                            Id = new Guid("cc8bbb40-018f-48e6-ab2f-c7ab920fbc3c"),
-                            ConcurrencyStamp = "483a11fd-87a9-48ea-a13a-4da50046794c",
+                            Id = new Guid("997b81c6-0b29-44f2-8312-54e3779086dd"),
+                            ConcurrencyStamp = "b471ce07-d126-4753-8ff7-04c10ef6da3d",
                             Type = "family_name",
                             UserId = new Guid("96053525-f4a5-47ee-855e-0ea77fa6c55a"),
                             Value = "Underwood"
                         },
                         new
                         {
-                            Id = new Guid("6090b7d6-1f76-442b-a904-1b47a75e949a"),
-                            ConcurrencyStamp = "68a7bf5f-947a-4c87-b66d-5b10ec80f024",
+                            Id = new Guid("f03a01b3-973c-444d-bacf-a7944f2f7716"),
+                            ConcurrencyStamp = "07af7f5c-e786-4032-90c0-1f85c06c77b8",
+                            Type = "email",
+                            UserId = new Guid("96053525-f4a5-47ee-855e-0ea77fa6c55a"),
+                            Value = "claire@someprovider.com"
+                        },
+                        new
+                        {
+                            Id = new Guid("813506fd-4848-4ffd-9f2c-ac4fe5ddc4dd"),
+                            ConcurrencyStamp = "5318139a-7528-406a-b0d4-1e011265698f",
                             Type = "address",
                             UserId = new Guid("96053525-f4a5-47ee-855e-0ea77fa6c55a"),
                             Value = "Big Street 2"
                         },
                         new
                         {
-                            Id = new Guid("c19f27b4-a4ba-483a-a694-9311f584872b"),
-                            ConcurrencyStamp = "a4341096-838c-4765-be13-60163b2fb8ba",
-                            Type = "subscriptionlevel",
+                            Id = new Guid("7be58483-42e4-444e-a832-b10dc0c74d9a"),
+                            ConcurrencyStamp = "6d4c8aa2-4d0c-438c-8d1d-deb279dd0765",
+                            Type = "role",
                             UserId = new Guid("96053525-f4a5-47ee-855e-0ea77fa6c55a"),
-                            Value = "PayingUser"
-                        },
-                        new
-                        {
-                            Id = new Guid("80df9333-1b0d-43a3-b8c0-7dac516a5227"),
-                            ConcurrencyStamp = "25d976b1-a1c5-44da-9313-1302b96c6761",
-                            Type = "country",
-                            UserId = new Guid("96053525-f4a5-47ee-855e-0ea77fa6c55a"),
-                            Value = "be"
+                            Value = "User"
                         });
                 });
 
