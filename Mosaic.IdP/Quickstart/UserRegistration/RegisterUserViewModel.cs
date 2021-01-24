@@ -1,21 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Mosaic.IdP.UserRegistration
 {
     public class RegisterUserViewModel
     {
-        [MaxLength(200)]
-        [Display(Name ="UserName")]
+        [StringLength(15, ErrorMessage = "{0} length must be between {2} and {1}.", MinimumLength = 4)]
+        [Display(Name ="User Name")]
         public string UserName { get; set; }
 
-        [MaxLength(200)]
+        [MinLength(8)]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }
+
+        [Required(ErrorMessage = "Confirmation Password is required.")]
+        [Display(Name = "Confirm Password")]
+        [Compare("Password", ErrorMessage = "Password and Confirmation Password must match.")]
+        public string ConfirmPassword { get; set; }
+
+        [Required]
+        public string Role { get; set;  } 
+        public List<string> RoleList { get; } = new List<string> { "User", "Admin" };
 
         [Required]
         [MaxLength(200)]
@@ -23,15 +30,26 @@ namespace Mosaic.IdP.UserRegistration
         [EmailAddress]
         public string Email { get; set; }
 
-        [Required]
-        [MaxLength(250)]
-        [Display(Name = "Given name")]
-        public string GivenName { get; set; }
+        [Required(ErrorMessage = "Confirmation Email is required.")]
+        [Display(Name = "Confirm Email")]
+        [Compare("Email", ErrorMessage = "Email and Confirmation Email must match.")]
+        public string ConfirmEmail { get; set; }
 
         [Required]
         [MaxLength(250)]
-        [Display(Name = "Family name")]
-        public string FamilyName { get; set; }
+        [Display(Name = "Fist name")]
+        public string FirstName { get; set; }
+
+        [Required]
+        [MaxLength(250)]
+        [Display(Name = "Last name")]
+        public string LastName { get; set; }
+
+        //Must be a valid date
+        [Display(Name = "Date of birht")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
+        public DateTime BirthDate { get; set; }
 
         [Required]
         [MaxLength(250)]

@@ -6,8 +6,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 //using Microsoft.AspNetCore.Authentication.Abstractions;
-using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
 using IdentityServer4;
 
@@ -58,14 +56,33 @@ namespace Mosaic.IdP.UserRegistration
             userToCreate.Claims.Add(new Entities.UserClaim()
             {
                 Type = JwtClaimTypes.GivenName,
-                Value = model.GivenName
+                Value = model.FirstName
             });
 
             userToCreate.Claims.Add(new Entities.UserClaim()
             {
                 Type = JwtClaimTypes.FamilyName,
-                Value = model.FamilyName
+                Value = model.LastName
             });
+
+            userToCreate.Claims.Add(new Entities.UserClaim()
+            {
+                Type = JwtClaimTypes.Email,
+                Value = model.Email
+            });
+
+            userToCreate.Claims.Add(new Entities.UserClaim()
+            {
+                Type = JwtClaimTypes.BirthDate,
+                Value = model.BirthDate.ToString()
+            });
+
+            userToCreate.Claims.Add(new Entities.UserClaim()
+            {
+                Type = JwtClaimTypes.Role,
+                Value = model.Role
+            });
+
             LocalUserService.AddUser(userToCreate);
             await LocalUserService.SaveChangesAsync();
 
