@@ -16,12 +16,12 @@ namespace Mosaic.IdP.Services
     public class LocalUserService : ILocalUserService
     {
         private readonly IdentityDbContext _context;
+        private readonly IPasswordHasher<User> PasswordHasher;
 
-        public LocalUserService(
-            IdentityDbContext context)
+        public LocalUserService(IdentityDbContext context, IPasswordHasher<User> passwordHasher)
         {
-            _context = context ?? 
-                throw new ArgumentNullException(nameof(context));
+            _context = context ?? throw new ArgumentNullException(nameof(context));
+            PasswordHasher = passwordHasher ?? throw new ArgumentNullException(nameof(passwordHasher));
         }          
 
         public async Task<bool> IsUserActive(string subject)
@@ -40,9 +40,34 @@ namespace Mosaic.IdP.Services
 
             return user.Active;
         }
-         
-        public async Task<bool> ValidateClearTextCredentialsAsync(string userName,
-          string password)
+
+        //public async Task<bool> ValidateClearTextCredentialsAsync(string userName,
+        //  string password)
+        //{
+        //    if (string.IsNullOrWhiteSpace(userName) ||
+        //        string.IsNullOrWhiteSpace(password))
+        //    {
+        //        return false;
+        //    }
+
+        //    var user = await GetUserByUserNameAsync(userName);
+
+        //    if (user == null)
+        //    {
+        //        return false;
+        //    }
+
+        //    if (!user.Active)
+        //    {
+        //        return false;
+        //    }
+
+        //    // Validate credentials
+        //    return (user.Password == password);
+        //}
+
+        public async Task<bool> ValidateCredentialsAsync(string userName,
+            string password)
         {
             if (string.IsNullOrWhiteSpace(userName) ||
                 string.IsNullOrWhiteSpace(password))
@@ -63,34 +88,9 @@ namespace Mosaic.IdP.Services
             }
 
             // Validate credentials
-            return (user.Password == password);
+            var verificationResult = PasswordHasher.VerifyHashedPassword(user, user.Password, password);
+            return (verificationResult == PasswordVerificationResult.Success);
         }
-
-        //public async Task<bool> ValidateCredentialsAsync(string userName, 
-        //    string password)
-        //{
-        //    if (string.IsNullOrWhiteSpace(userName) || 
-        //        string.IsNullOrWhiteSpace(password))
-        //    {
-        //        return false;
-        //    }
-
-        //    var user = await GetUserByUserNameAsync(userName);
-
-        //    if (user == null)
-        //    {
-        //        return false;
-        //    }
-
-        //    if (!user.Active)
-        //    {
-        //        return false;
-        //    }
-
-        //    // Validate credentials
-        //    var verificationResult = _passwordHasher.VerifyHashedPassword(user, user.Password, password);        
-        //    return (verificationResult == PasswordVerificationResult.Success);
-        //}
 
         public async Task<User> GetUserByUserNameAsync(string userName)
         {
@@ -123,11 +123,16 @@ namespace Mosaic.IdP.Services
             return await _context.Users.FirstOrDefaultAsync(u => u.Subject == subject);
         }
      
-        public void AddUser(User userToAdd)
+        public void AddUser(User userToAdd, string password)
         {
             if (userToAdd == null)
             { 
                 throw new ArgumentNullException(nameof(userToAdd));
+            }
+
+            if (String.IsNullOrWhiteSpace(password))
+            {
+                throw new ArgumentNullException(nameof(password));
             }
 
             if (_context.Users.Any(u => u.UserName == userToAdd.UserName))
@@ -136,7 +141,9 @@ namespace Mosaic.IdP.Services
                 // return this as a validation issue
                 throw new Exception("Username must be unique");
             }
-            
+
+            // Hash and Salt password
+            userToAdd.Password = PasswordHasher.HashPassword(userToAdd, password);
             _context.Users.Add(userToAdd);
         }
 
