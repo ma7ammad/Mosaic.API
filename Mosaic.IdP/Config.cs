@@ -1,5 +1,6 @@
 ﻿using IdentityServer4;
 using IdentityServer4.Models;
+using System;
 using System.Collections.Generic;
 
 namespace Mosaic.IdP
@@ -12,7 +13,9 @@ namespace Mosaic.IdP
                 new IdentityResources.OpenId(),
                 new IdentityResources.Profile(),
                 new IdentityResources.Email(),
-                new IdentityResource("roles", "Your roles(s)", new List<string>() {"role" })
+                new IdentityResources.Address(),
+                new IdentityResource("roles", "Your roles(s)", new List<string>() {"role" }),
+                new IdentityResource("BirthDate", "Date Of Birht", new List<string>(){"BirthDate" })
             };
 
         public static IEnumerable<ApiScope> ApiScopes =>
@@ -61,7 +64,9 @@ namespace Mosaic.IdP
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
                         IdentityServerConstants.StandardScopes.Email,
+                        IdentityServerConstants.StandardScopes.Address,
                         "roles",
+                        "BirthDate",
                         "mosaicapi"
                     },
                     ClientSecrets =
