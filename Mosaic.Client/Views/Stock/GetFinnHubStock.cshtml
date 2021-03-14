@@ -1,0 +1,71 @@
+﻿@model IEnumerable<Mosaic.API.Models.FinnhubStock>
+
+@{
+    ViewData["Title"] = "GetFinnHubStock";
+}
+
+<h1>GetFinnHubStock</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.currency)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.displaySymbol)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.figi)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.mic)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.symbol)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.type)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.currency)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.displaySymbol)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.figi)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.mic)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.symbol)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.type)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

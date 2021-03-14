@@ -46,35 +46,39 @@ namespace Mosaic.IdP
             services.AddScoped<IPasswordHasher<Entities.User>, PasswordHasher<Entities.User>>();
             services.AddScoped<ILocalUserService, LocalUserService>();
 
-            var builder = services.AddIdentityServer(options =>
+            var builder = services.AddIdentityServer(
+                options =>
             {
                 // see https://identityserver4.readthedocs.io/en/latest/topics/resources.html
                 options.EmitStaticAudienceClaim = true;
-            })
-                .AddInMemoryIdentityResources(Config.IdentityResources)
-                .AddInMemoryApiScopes(Config.ApiScopes)
-                .AddInMemoryApiResources(Config.ApiResources)
-                .AddInMemoryClients(Config.Clients);
+            }
+            )
+            //.AddInMemoryIdentityResources(Config.IdentityResources)
+            //.AddInMemoryApiScopes(Config.ApiScopes)
+            //.AddInMemoryApiResources(Config.ApiResources)
+            //.AddInMemoryClients(Config.Clients);
             //.AddTestUsers(TestUsers.Users);
-
+            ;
             builder.AddProfileService<LocalUserProfileService>();
 
             // not recommended for production - you need to store your key material somewhere secure
             builder.AddDeveloperSigningCredential();
             //builder.AddSigningCredential(LoadCertificateFromStore());
 
-            //var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
+            var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
 
-            //builder.AddConfigurationStore(options =>
-            //{
-            //    options.ConfigureDbContext = builder =>
-            //        builder.UseSqlServer(mosaicidpdbconnectionstring, options =>
-            //        {
-            //            //tell EntityCore/sql that migration assebly are different and located in MosaicIdP assembly
-            //            options.MigrationsAssembly(migrationsAssembly);
-            //        });
-            //});
+            // add store for configuration of IdP (clients, Apis, scopes .. ) : all data from Config.cs
+            builder.AddConfigurationStore(options =>
+            {
+                options.ConfigureDbContext = builder =>
+                    builder.UseSqlServer(mosaicidpdbconnectionstring, options =>
+                    {
+                        //tell EntityCore/sql that migration assebly are different and located in MosaicIdP assembly
+                        options.MigrationsAssembly(migrationsAssembly);
+                    });
+            });
 
+            //// add store for operationsl data of IdP (clients, Apis, scopes .. ) : all data from Config.cs
             //builder.AddOperationalStore(options =>
             //{
             //    options.ConfigureDbContext = builder =>
@@ -99,7 +103,6 @@ namespace Mosaic.IdP
 
             app.UseIdentityServer();
 
-            // uncomment, if you want to add MVC
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
@@ -133,9 +136,10 @@ namespace Mosaic.IdP
                 serviceScope.ServiceProvider
                     .GetRequiredService<PersistedGrantDbContext>().Database.Migrate();
 
-                var context = serviceScope.ServiceProvider
-                    .GetRequiredService<ConfigurationDbContext>();
+                var context = serviceScope.ServiceProvider.GetRequiredService<ConfigurationDbContext>();
+
                 context.Database.Migrate();
+
                 if (!context.Clients.Any())
                 {
                     foreach (var client in Config.Clients)
