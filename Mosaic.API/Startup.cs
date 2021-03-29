@@ -5,7 +5,9 @@ using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Net.Http.Headers;
 using Mosaic.API.Services;
+using System;
 
 namespace Mosaic.API
 {
@@ -29,7 +31,6 @@ namespace Mosaic.API
                     options.OutputFormatters.Add(new XmlDataContractSerializerOutputFormatter());
                 });
 
-            
 
             services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
                 .AddIdentityServerAuthentication(options =>
@@ -39,7 +40,17 @@ namespace Mosaic.API
                     options.ApiSecret = "apisecret";
                 });
 
+            // Create a HttpClient for accessing the API
+            services.AddHttpClient("finnhub.io", client =>
+            {
+                client.BaseAddress = new Uri(Configuration["FinnHub:BaseUri"]);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/json");
+                //client.DefaultRequestHeaders.TryAddWithoutValidation("token", Configuration["FinnHub:Token"]);
+            });
+
             services.AddSingleton<IStocksService, StockService>();
+            services.AddSingleton<IFinnHubService, FinnHubService>();
             services.AddSingleton<IUserService, UserService>();
         }
 

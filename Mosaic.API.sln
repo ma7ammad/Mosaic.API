@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mosaic.IdP", "Mosaic.IdP\Mo
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{CE5EF248-9763-4613-94A3-AA4AB6632B51}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mosaic.Client", "Mosaic.Client\Mosaic.Client.csproj", "{A37A0387-1335-43FC-9BF7-64060311E8C1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mosaic.Client", "Mosaic.Client\Mosaic.Client.csproj", "{A37A0387-1335-43FC-9BF7-64060311E8C1}"
+EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Mosaic.DB", "Mosaic.DB\Mosaic.DB.sqlproj", "{57D54403-3A39-48A8-BC8D-20A3F965D396}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,6 +31,12 @@ Global
 		{A37A0387-1335-43FC-9BF7-64060311E8C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A37A0387-1335-43FC-9BF7-64060311E8C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A37A0387-1335-43FC-9BF7-64060311E8C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{57D54403-3A39-48A8-BC8D-20A3F965D396}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57D54403-3A39-48A8-BC8D-20A3F965D396}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57D54403-3A39-48A8-BC8D-20A3F965D396}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{57D54403-3A39-48A8-BC8D-20A3F965D396}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57D54403-3A39-48A8-BC8D-20A3F965D396}.Release|Any CPU.Build.0 = Release|Any CPU
+		{57D54403-3A39-48A8-BC8D-20A3F965D396}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

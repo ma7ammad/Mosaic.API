@@ -17,11 +17,13 @@ namespace Mosaic.API.Controllers
     public class StocksController : ControllerBase
     {
         readonly IStocksService StockService;
+        private readonly IFinnHubService FinnHubService;
         private readonly ILogger<StocksController> logger;
 
-        public StocksController(IStocksService _StockService, ILogger<StocksController> _logger)
+        public StocksController(IStocksService _StockService, IFinnHubService finnHubService, ILogger<StocksController> _logger)
         {
             StockService = _StockService;
+            FinnHubService = finnHubService;
             logger = _logger ?? throw new ArgumentNullException(nameof(_logger));
         }
 
@@ -58,6 +60,19 @@ namespace Mosaic.API.Controllers
             if (stock == null)
             {
                 logger.LogError($"No Stock found with id = {id}");
+                return NotFound();
+            }
+
+            return Ok(stock);
+        }
+
+        [HttpGet("GetFinnHubStock")]
+        public IActionResult GetFinnHubStock()
+        {
+            var stock = FinnHubService.GetAllStockSymbols().Result;
+            if (stock == null)
+            {
+                logger.LogError($"No Stock found from FinnHub");
                 return NotFound();
             }
 

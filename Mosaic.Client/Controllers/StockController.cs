@@ -22,12 +22,25 @@ namespace Mosaic.Client.Controllers
             {
                 return View(StockService.GetAllStocks().Result);
             }
-            catch
+            catch(Exception e)
             {
+                logger.LogError($"Error happened with message {e.Message} and inner exception {e.InnerException.Message}");
                 return RedirectToAction("AccessDenied", "Authorisation");
             }
         }
 
+        public IActionResult GetFinnHubStock()
+        {
+            try
+            {
+                return View(StockService.GetFinnHubStock().Result);
+            }
+            catch
+            {
+                return RedirectToAction("AccessDenied", "Authorisation");
+            }
+
+        }
         public IActionResult GetUserStocks()
         {
             try

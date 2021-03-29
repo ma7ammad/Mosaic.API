@@ -6,10 +6,12 @@ namespace Mosaic.IdP.UserRegistration
 {
     public class RegisterUserViewModel
     {
+        [Required]
         [StringLength(15, ErrorMessage = "{0} length must be between {2} and {1}.", MinimumLength = 4)]
         [Display(Name ="User Name")]
         public string UserName { get; set; }
 
+        [Required]
         [MinLength(8)]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
@@ -51,7 +53,6 @@ namespace Mosaic.IdP.UserRegistration
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         public DateTime BirthDate { get; set; }
 
-        [Required]
         [MaxLength(250)]
         [Display(Name = "Address")]
         public string Address { get; set; }
